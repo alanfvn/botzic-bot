@@ -11,19 +11,20 @@ export default {
     const events = getEvents()
     const embed = new EmbedBuilder()
     .setColor('#deff58')
-    .setTitle("📝 Lista de tareas:")
+    .setTitle("📝 TAREAS:")
 
     if(events.length > 0){
-      events.forEach(event =>{
+
+      for(const ev of events){
         embed.addFields({
-          name: `📗 ${event.name.toLocaleUpperCase()}`,
+          name: `📗 ${ev.getName()}`,
           value: `
-> 🕑 **Expira:** \`${dateFormat.format(event.expiry)}\`
-> 🆔 **Id:** \`${event.id}\`
-> 📑 **[Descripción](${event.url})**
+> 🕑 **EXPIRA:** \`${dateFormat.format(ev.getExpiry())}\`
+> 🔢 **ID:** \`${ev.getId()}\`
 `
         })
-      })
+      }
+
     } else {
       embed.setDescription("No hay tareas 👌")
     }

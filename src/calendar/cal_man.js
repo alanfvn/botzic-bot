@@ -7,6 +7,9 @@ let calData = {}
 
 async function fetchCalendar(){
   const calendar = await ical.async.fromURL(CAL)
+  // clean the calendar
+  calData = {}
+
   for(const [uid,event] of Object.entries(calendar)){
     if(event.type !== 'VEVENT') continue;
     const {summary,end} = event
