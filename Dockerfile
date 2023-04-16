@@ -10,4 +10,3 @@ ENV GUILD_ID=""
 ENV TZ=America/Guatemala
 # run the bot
 CMD [ "npm", "run", "start"]
-
