@@ -6,9 +6,15 @@ const CAL = process.env.CAL_URL || ""
 let calData = {}
 
 async function fetchCalendar(){
-  const calendar = await ical.async.fromURL(CAL)
+  let calendar = {}
   // clean the calendar
   calData = {}
+
+  try {
+    calendar = await ical.async.fromURL(CAL)
+  } catch (error) {
+    console.log("Couldn't fetch calendar ", error)
+  }
 
   for(const [uid,event] of Object.entries(calendar)){
     if(event.type !== 'VEVENT') continue;

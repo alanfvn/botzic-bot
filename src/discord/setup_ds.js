@@ -8,7 +8,7 @@ const {
   CLIENT_ID: CLIENT
 } = process.env
 
-const DISCORD_REST = new REST({ version: '10' }).setToken(TOKEN);
+const DS_REST = new REST({ version: '10' }).setToken(TOKEN);
 
 async function loadCommands(){
   const curdir = getDir(import.meta.url)
@@ -23,16 +23,24 @@ async function loadCommands(){
   return commands
 }
 
+
 async function setupCommands(){
   const commands = await loadCommands()
-  console.log(commands)
+  console.log(`Started refreshing ${commands.length} application (/) commands.`);
+
   try {
-    console.log(`Started refreshing ${commands.length} application (/) commands.`);
-    const data = await DISCORD_REST.put(
-      Routes.applicationGuildCommands(CLIENT, GUILD),
-      { body: commands }
-    );
-    console.log(`Successfully reloaded ${data.length} application (/) commands.`);
+
+    if(!GUILD){
+      await DS_REST.put(Routes.applicationCommands(CLIENT), { body: [] })
+      console.log(`Deleted previous commands!`)
+      const data = await DS_REST.put(Routes.applicationCommands(CLIENT),{ body: commands });
+      console.log(`Successfully reloaded ${data.length} application (/) commands.`);
+    }else{
+      await DS_REST.put(Routes.applicationGuildCommands(CLIENT, GUILD), { body: [] })
+      console.log(`Deleted previous commands!`)
+      const data = await DS_REST.put(Routes.applicationGuildCommands(CLIENT, GUILD),{ body: commands });
+      console.log(`Successfully reloaded ${data.length} guild (/) commands.`);
+    }   
   } catch (error) {
     console.error(error);
   }
