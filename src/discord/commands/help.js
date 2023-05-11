@@ -28,20 +28,6 @@ const VALUES = {
       }
     ]
   },
-  "comandos":{
-    "title": "Comandos 🔍",
-    "color": "#bfff58",
-    "fields": [
-      {
-        name: "Cisco 🌐",
-        value: "[ENLACE](https://gist.github.com/alanfvn/9979f169c90e09187bbc0d60f3be4d68)"
-      },
-      {
-        name: "Linux 🐧",
-        value: "[ENLACE](https://gist.github.com/alanfvn/2d9b9c072669f83ff6c7c933c8a41504)"
-      }
-    ]
-  },
   "arreglos":{
     "title": "Arreglos ⚒️",
     "color": "#58f7ff",
@@ -83,16 +69,14 @@ const VALUES = {
 function getEmbed(params) {
   const embed = new EmbedBuilder()
   const exists = params in VALUES
-
   if(!exists){
-    embed.setDescription("Ayuda no encontrada 🤔, disponibles: clases, arreglos, comandos, compas")
+    embed.setDescription("Ayuda no encontrada 🤔, disponibles: clases, arreglos, compas")
   }else{
     const data = VALUES[params]
     embed.setTitle(data.title)
     embed.setColor(data.color)
     embed.addFields(data.fields)
   }
-
   return embed
 }
 
@@ -103,12 +87,17 @@ export default {
   .setDescription("Obten información variada")
   .addStringOption(op =>
     op.setName('type')
-    .setDescription('Tipo de ayuda clases/arreglos/comandos')
+    .setDescription('Tipo de ayuda')
     .setRequired(true)
+    .addChoices(
+      {name: "Horario de clases", value: "clases"}, 
+      {name: "Arreglos de Windows", value: "arreglos"}, 
+      {name: "Listado de compañeros", value: "compas"}, 
+    )
   ),
   async execute(interaction) {
-    const arg1 = interaction.options.getString('type', true).toLowerCase();
-    const embed = getEmbed(arg1)
+    const arg = interaction.options.getString('type')
+    const embed = getEmbed(arg)
     await interaction.reply({ embeds: [embed], ephemeral: true });
   },
 }
