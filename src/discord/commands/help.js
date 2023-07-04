@@ -1,67 +1,71 @@
 import { SlashCommandBuilder, EmbedBuilder } from "discord.js";
 
-
 const VALUES = {
   "clases":{
-    "title": "Horarios 📅",
+    "title": null,
     "color": "#ffd858",
     "fields": [
       {
-        name: "Lunes",
-        value: "> `Ingeniería de software`\n> `Proyecto de graduación I`"
+        name: "Horarios 📅",
+        value: `
+1. **Lunes**
+  - Telecomunicaciones
+  - Proyecto de graduación II
+2. **Martes**
+  - Seminario de tecnologías de información
+  - Aseguramiento de la calidad de software
+3. **Miercoles**
+  - Seminario de tecnologías de información
+  - Proyecto de graduación II
+4. **Jueves**
+  - Seguridad y auditoria de sistemas
+5. **Viernes**
+  - Aseguramiento de la calidad de software
+  - Telecomunicaciones
+`
       },
-      {
-        name: "Martes",
-        value: "> `Redes de computadoras II`\n> `Proyecto de graduación I`"
-      },
-      {
-        name: "Miercoles",
-        value: "> `Inteligencia artificial`\n> `Ingeniería de software`"
-      },
-      {
-        name: "Jueves",
-        value: "> `Admin. de tecnologías de la información`\n> `Inteligencia artificial`"
-      },
-      {
-        name: "Viernes",
-        value: "> `Admin. de tecnologías de la información`\n> `Redes de computadoras II`"
-      }
     ]
   },
   "arreglos":{
-    "title": "Arreglos ⚒️",
+    "title": null,
     "color": "#58f7ff",
     "fields": [
       {
-        name: "Docker",
-        value: "`bcdedit /set hypervisorlaunchtype auto `"
+        name: "Arreglos ⚒️",
+        value: `\`\`\`powershell
+# Arreglar Docker
+bcdedit /set hypervisorlaunchtype auto
+
+# Arreglar GNS3
+bcdedit /set hypervisorlaunchtype off \`\`\``
       },
-      {
-        name: "GNS3",
-        value: "`bcdedit /set hypervisorlaunchtype off `"
-      }
     ]
   },
   "compas":{
-    "title": "Compañeros 📃",
+    "title": null,
     "color": "#58f7ff",
     "fields": [
       {
-        name: "Alan",
-        value: "> `Alan David González López`\n> `4090-19-4713`\n> `agonzalezl22@miumg.edu.gt`"
+        name: "Compañeros 🫂",
+        value: `
+1. **Alan**
+  - Alan David González López
+  - 4090-19-4713
+  - agonzalezl22@miumg.edu.gt
+2. **Migue**
+  - Manuel Miguel Miguel
+  - 4090-19-9063  
+  - mmiguelm2@miumg.edu.gt
+3. **Noe**
+  - Noé Abraham Caal Ac
+  - 4090-19-16203
+  - ncaala@miumg.edu.gt
+4. **Raul**
+  -  José Raúl Botzoc Mérida
+  - 4090-19-7994
+  - jbotzocm@miumg.edu.gt
+`
       },
-      {
-        name: "Miguel",
-        value: "> `Manuel Miguel Miguel`\n> `4090-19-9063`\n> `mmiguelm2@miumg.edu.gt`"
-      },
-      {
-        name: "Noe",
-        value: "> `Noé Abraham Caal Ac`\n> `4090-19-16203`\n> `ncaala@miumg.edu.gt`"
-      },
-      {
-        name: "Raúl",
-        value: "> `José Raúl Botzoc Mérida`\n> `4090-19-7994`\n> `jbotzocm@miumg.edu.gt`"
-      }
     ]
   },
 }
@@ -72,10 +76,12 @@ function getEmbed(params) {
   if(!exists){
     embed.setDescription("Ayuda no encontrada 🤔, disponibles: clases, arreglos, compas")
   }else{
-    const data = VALUES[params]
-    embed.setTitle(data.title)
-    embed.setColor(data.color)
-    embed.addFields(data.fields)
+    const {title, color, fields} = VALUES[params]
+    if(title){
+      embed.setTitle(title)
+    }
+    embed.setColor(color)
+    embed.addFields(fields)
   }
   return embed
 }
